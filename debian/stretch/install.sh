@@ -50,9 +50,19 @@ ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
 
 ### setup ssh server
-sed -i 's/Port 22$/Port '$PORT_SSH'/' /etc/ssh/sshd_config
-sed -i 's/PermitRootLogin without-password/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i 's/#Port 22$/Port '$PORT_SSH'/' /etc/ssh/sshd_config
+sed -i 's/#PermitRootLogin without-password/PermitRootLogin no/' /etc/ssh/sshd_config
 if ! grep -q 'UseDNS no' /etc/ssh/sshd_config
 then
 	echo 'UseDNS no' >> /etc/ssh/sshd_config
 fi
+
+### quagga
+cp apt-quagga.list /etc/apt/sources.list
+apt update -y 
+apt install quagga -y
+
+### vlan
+cp apt-sources.list /etc/apt/sources.list
+apt update -y 
+apt install vlan -y 
